@@ -1,0 +1,30 @@
+{
+  "name": "SHINO",
+  "description": "Legumes Magician",
+  "main": "",
+  "authors": [
+    "kimochg <kimochg@outlook.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "SHINO",
+    "Legumes"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "angular": "^1.6.1",
+    "angular-ui-router": "^0.3.2",
+    "angular-resource": "^1.6.1",
+    "angular-mocks": "^1.6.1"
+  }
+}
