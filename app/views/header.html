@@ -1,0 +1,32 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#mainNav"
+                    aria-expanded="false"
+            >
+                <span class="src-only">Toggle Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+                <img class="img-logo"
+                    ng-src="images/logo.png"
+                >
+                <!--{{logrem}}-->
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="nav navbar-nav">
+                <li><a ui-sref="app"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></li>
+                <li><a ui-sref="app.aboutus"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> About</a></li>
+                <li><a ui-sref="app.menu"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Menu</a></li>
+                <li><a ui-sref="app.contactus"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Contact Us</a></li>
+                <!--<li><a ui-sref=""><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>-->
+            </ul>
+        </div>
+    </div>
+</nav>
