@@ -4,6 +4,28 @@
     height: 30px;
 }
 
+.img-banner {
+  background-image: url("../images/uthapizza.png");
+  background-repeat: no-repeat;
+}
+
+.navbar {
+  margin: 0px 0px;
+  padding: 0px;
+}
+
+.jumbotron {
+  margin: 0px auto;
+  padding: 0px 0px;
+}
+
+.row-header {
+  margin: 0px auto;
+  padding: 0px 0px;
+}
+
+
+
 .menu {
   list-style: none;
   border-bottom: 0.1em solid black;

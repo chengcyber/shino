@@ -20,6 +20,7 @@ angular.module('shino', [
                 },
                 'footer': {
                     templateUrl: 'views/footer.html',
+                    controller: 'FooterController'
                 }
             }
         })
