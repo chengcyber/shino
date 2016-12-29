@@ -4,8 +4,8 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     usemin = require('gulp-usemin'),
     imagemin = require('gulp-imagemin'),
-    rename = require('gulp-rename'),
-    concat = require('gulp-concat'),
+    // rename = require('gulp-rename'),
+    // concat = require('gulp-concat'),
     notify = require('gulp-notify'),
     cache = require('gulp-cache'),
     // changed = require('gulp-changed'),
@@ -16,7 +16,7 @@ var gulp = require('gulp'),
 
 
 // eslint
-gulp.task('eslint', () => {
+gulp.task('eslint', function() {
     return gulp.src('app/scripts/**/*.js')
         .pipe(eslint())
         .pipe(eslint.format())
@@ -24,11 +24,75 @@ gulp.task('eslint', () => {
 });
 
 // clean: delete all previous generated files
-gulp.task('clean', () => {
+gulp.task('clean', function() {
     return del(['dist']);
 });
 
 // default task: usemin, imagemin, copyfonts
-gulp.task('default', ['clean'], () => {
+gulp.task('default', ['clean'], function() {
     gulp.start('usemin', 'imagemin', 'copyfonts');
+})
+
+/* usemin: quick config for handling script files
+ * build foo.rev.css foo.rev.js
+ */
+gulp.task('usemin', ['eslint'], function() {
+    gulp.src('./app/views/*.html')
+        .pipe(gulp.dest('dist/views'));
+    return gulp.src('./app/*.html')
+        .pipe(usemin({
+            css: [cleanCss(), rev()],
+            js: [ngAnnotate(), uglify(), rev()]
+        }))
+        .pipe(gulp.dest('dist/'));
+});
+
+// imagemin: optimizing image file size
+gulp.task('imagemin', function() {
+    del(['dist/images']);
+    return gulp.src('app/images/**/*')
+        .pipe(cache(imagemin({
+            optimizationLevel: 3,
+            progressive: true,
+            interlaced: true
+        })))
+        .pipe(gulp.dest('dist/images'))
+        .pipe(notify({
+            message: 'Images task complete'
+        }));
+});
+
+// copyfonts: copy fonts file to dist/
+gulp.task('copyfonts', ['clean'], function() {
+    gulp.src('./app/bower_components/font-awesome/fonts/**/*.{ttf,woff,eof,svg}*')
+        .pipe(gulp.dest('./dist/fonts'));
+    gulp.src('./app/bower_components/bootstrap/dist/fonts/**/*.{ttf,woff,eof,svg}*')
+        .pipe(gulp.dest('./dist/fonts'));
+});
+
+// watch: watch file changes
+gulp.task('watch', ['browser-sync'], function() {
+    // watch html/css/js files
+    gulp.watch('{app/scripts/**/*.js,app/styles/**/*.css,app/**/*.html}', ['usemin']);
+    // watch image files
+    gulp.watch('app/images/**/*', ['imagemin']);
+});
+
+gulp.task('browser-sync', ['default'], function() {
+    var files = [
+        'app/**/*.html',
+        'app/styles/**/*.css',
+        'app/images/**/*.png',
+        'app/scripts/**/*.js',
+        'dist/**/*'
+    ];
+
+    browserSync.init(files, {
+        server: {
+            baseDir: 'dist',
+            index: 'index.html'
+        }
+    });
+    
+    gulp.watch(['dist/**']).on('change', browserSync.reload);
 });
