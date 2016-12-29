@@ -1,0 +1,21 @@
+{
+  "extends": "eslint:recommended",
+  "env": {
+    "node": true
+  },
+  "plugins": [
+    "angular"
+  ],
+  "globals": {
+    "angular": true,
+    "faker": true
+  },
+  "rules": {
+    "indent": ["error", 4],
+    "angular/controller-name": [
+      2,
+      "/[A-Z].*Controller$/"
+    ]
+
+  }
+}
