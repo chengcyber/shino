@@ -2,7 +2,7 @@
 
 angular.module('shino')
     .controller('HeaderController', ['$scope', function($scope) {
-       $scope.logo = faker.image.imageUrl(60, 60);
+        $scope.logo = faker.image.imageUrl(60, 60);
         $scope.lorem = faker.lorem.sentence();
     }])
 
@@ -23,6 +23,6 @@ angular.module('shino')
     }])
 
     .controller('IndexController', ['$scope', function($scope) {
-
+        $scope.ok = true;
     }])
 ;

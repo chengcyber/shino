@@ -5,7 +5,7 @@ bower_components/
 tmp
 .DS_Store
 .idea
-
+dist/
 
 # Created by https://www.gitignore.io/api/webstorm,bower,visualstudiocode,macos,node
 
