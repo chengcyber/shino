@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="row row-content">
+    <div class="col-xs-12">
+
+      <ul class="nav nav-tabs" role="tablist">
+        <li roles="presentation" ng-class="{active:checkSelection('')}">
+          <a ng-click="setSelection('')" role="tab" aria-controls="menu">The Menu</a>
+        </li>
+        <li roles="presentation" ng-class="{active:checkSelection('appetizer')}">
+          <a ng-click="setSelection('appetizer')" role="tab" aria-controls="appetizers">Appetizers</a>
+        </li>
+        <li roles="presentation" ng-class="{active:checkSelection('main')}">
+          <a ng-click="setSelection('main')" role="tab" aria-controls="mains">Mains</a>
+        </li>
+        <li roles="presentation" ng-class="{active:checkSelection('dessert')}">
+          <a ng-click="setSelection('dessert')" role="tab" aria-controls="desserts">Desserts</a>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <ul class="media-list tab-pane fade in active">
+          <li class="media" ng-repeat="dish in dishes | filter: selection">
+
+
+            <div class="media-left media-middle">
+              <a ui-sref="app.dishdetail({id: dish.id})">
+                <img alt="dish image" class="media-object img-thumbnail" ng-src="{{dish.image}}">
+              </a>
+            </div>
+            <div class="media-body">
+              <h2 class="media-heading">{{dish.name}}
+                <span class="label label-danger">{{dish.label}}</span>
+                <span class="badge">{{dish.price | currency}}</span>
+              </h2>
+              <p>{{dish.description}}</p>
+            </div>
+
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+  </div>
+</div>

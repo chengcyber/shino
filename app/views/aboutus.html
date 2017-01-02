@@ -1,0 +1,71 @@
+<div class="container">
+  <!--<div class="row">
+    <div class="col-xs-12">
+      <h3>About Us</h3>
+      <br/>
+    </div>
+  </div>-->
+
+  <div class="row row-content">
+    <div class="col-xs-12 col-sm-8">
+      <h2>Our history</h2>
+      <p>{{historyParagraph}}</p>
+
+      <div class="well">
+        <blackquote>
+          <p>You better cut the pizza in four pieces because
+            I'm not hungry enough to eat six
+          </p>
+          <cite title="Source Title">The Wit and Wisdom of Yogo Berra, P. Pepe, Diversion Books, 2014</cite>
+        </blackquote>
+      </div>
+    </div>
+    
+    <div class="col-xs-12 col-sm-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Facts At a Glance</h3>
+        </div>
+        
+        <div class="panel-body">
+          <dl class="dl-horizontal">
+            <dt>Started</dt>
+            <dd>{{started}}</dd>
+            <dt>Major Stake Holder</dt>
+            <dd>{{company}}</dd>
+            <dt>Last Year's Turnover</dt>
+            <dd>{{turnover}}</dd>
+            <dt>Employees</dt>
+            <dd>{{employees}}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row row-content">
+    <div class="col-xs-12 col-sm-9">
+      <h2>Corporate Leadership</h2>
+      <ul class="media-list">
+        <li class="media" ng-repeat="leader in leadership">
+          <div class="media-left media-middle">
+            <a>
+              <img ng-src="{{leader.image}}" alt="leader image" class="media-object img-thumbnail">
+            </a>
+          </div>
+          
+          <div class="media-body">
+            <h2 class="media-heading">{{leader.name}}
+              <span class="small">{{leader.designation}}</span>
+            </h2>
+            <p>{{leader.description}}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="col-xs-12 col-sm-3">
+      <p style="padding: 20px;"></p>
+    </div>
+  </div>
+</div>
