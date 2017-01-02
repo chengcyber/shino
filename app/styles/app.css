@@ -5,8 +5,10 @@
 }
 
 .img-banner {
-  background-image: url("../images/uthapizza.png");
-  background-repeat: no-repeat;
+  /*background-image: url("../images/uthapizza.png");
+  background-repeat: no-repeat;*/
+  background-color: #0FFFFF;
+  enable-background: true;
 }
 
 .navbar {
@@ -24,6 +26,19 @@
   padding: 0px 0px;
 }
 
+.row-content {
+  margin: 0px auto;
+  padding: 50px 0px;
+  border-bottom: 1px ridge;
+  min-height: 400px;
+}
+
+.tab-content {
+  border-bottom: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
+  padding: 10px;
+}
 
 
 .menu {
