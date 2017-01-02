@@ -30,7 +30,9 @@ gulp.task('clean', function() {
 
 // default task: usemin, imagemin, copyfonts
 gulp.task('default', ['clean'], function() {
-    gulp.start('usemin', 'imagemin', 'copyfonts');
+    gulp.start('usemin', 
+    'imagemin', 
+    'copyfonts');
 })
 
 /* usemin: quick config for handling script files
@@ -49,24 +51,23 @@ gulp.task('usemin', ['eslint'], function() {
 
 // imagemin: optimizing image file size
 gulp.task('imagemin', function() {
-    del(['dist/images']);
-    return gulp.src('app/images/**/*')
+    return del(['dist/images']), gulp.src('app/images/**/*')
         .pipe(cache(imagemin({
             optimizationLevel: 3,
             progressive: true,
             interlaced: true
         })))
         .pipe(gulp.dest('dist/images'))
-        .pipe(notify({
-            message: 'Images task complete'
-        }));
+        // .pipe(notify({
+        //     message: 'Images task complete'
+        // }));
 });
 
 // copyfonts: copy fonts file to dist/
 gulp.task('copyfonts', ['clean'], function() {
-    gulp.src('./app/bower_components/font-awesome/fonts/**/*.{ttf,woff,eof,svg}*')
+    gulp.src('app/bower_components/font-awesome/fonts/**/*.{ttf,woff,eof,svg}*')
         .pipe(gulp.dest('./dist/fonts'));
-    gulp.src('./app/bower_components/bootstrap/dist/fonts/**/*.{ttf,woff,eof,svg}*')
+    gulp.src('app/bower_components/bootstrap/dist/fonts/**/*.{ttf,woff,eof,svg}*')
         .pipe(gulp.dest('./dist/fonts'));
 });
 
