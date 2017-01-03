@@ -84,9 +84,23 @@ angular.module('shino')
             approve: false
         }
         
-        $scope.sendFeedback = function() {
-            // console.log($scope.feedback);
+        $scope.invalidSelection = false;
 
+        $scope.sendFeedback = function() {
+            console.log($scope.feedback);
+
+            if ($scope.feedback.approve && ($scope.feedback.mychannel === '') || !$scope.feedback.mychannel) {
+                $scope.invalidSelection = true;
+                console.log('feedback incorrect');
+                return ;
+            } 
+
+            /**
+             * Form Pristine
+             */
+            $scope.feedbackForm.$setPristine();
+            $scope.invalidSelection = false;
+        
             $scope.feedback = {
                 mychannel: '',
                 firstName: '',
@@ -95,6 +109,7 @@ angular.module('shino')
                 email: '',
                 comment: ''
             }
+            
         }
     }])
 
