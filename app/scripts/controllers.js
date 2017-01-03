@@ -22,264 +22,41 @@ angular.module('shino')
 
     }])
 
-    .controller('IndexController', ['$scope', function ($scope) {
-        $scope.dish = {
-            "name": "Uthapizza",
-            "image": "images/uthapizza.png",
-            "category": "mains",
-            "label": "Hot",
-            "price": "4.99",
-            "description": "A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.",
-            "comments": [
-                {
-                    "rating": 5,
-                    "comment": "Imagine all the eatables, living in conFusion!",
-                    "author": "John Lemon"
-                },
-                {
-                    "rating": 4,
-                    "comment": "Sends anyone to heaven, I wish I could get my mother-in-law to eat it!",
-                    "author": "Paul McVites"
-                },
-                {
-                    "rating": 3,
-                    "comment": "Eat it, just eat it!",
-                    "author": "Michael Jaikishan"
-                },
-                {
-                    "rating": 4,
-                    "comment": "Ultimate, Reaching for the stars!",
-                    "author": "Ringo Starry"
-                },
-                {
-                    "rating": 2,
-                    "comment": "It's your birthday, we're gonna party!",
-                    "author": "25 Cent"
-                }
-            ]
-        }
+    .controller('IndexController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
+        $scope.dish = menuFactory.getDishes().get({id: 0});
 
-        $scope.promotion = {
-            "name": "Weekend Grand Buffet",
-            "image": "images/buffet.png",
-            "label": "New",
-            "price": "19.99",
-            "description": "Featuring mouthwatering combinations with a choice of five different salads, six enticing appetizers, six main entrees and five choicest desserts. Free flowing bubbly and soft drinks. All for just $19.99 per person "
-        }
+        $scope.promotion = menuFactory.getPromotions().get({id:0});
 
-        $scope.specialist = {
-            "name": "Peter Pan",
-            "image": "images/alberto.png",
-            "designation": "Chief Epicurious Officer",
-            "abbr": "CEO",
-            "description": "Our CEO, Peter, credits his hardworking East Asian immigrant parents who undertook the arduous journey to the shores of America with the intention of giving their children the best future. His mother's wizardy in the kitchen whipping up the tastiest dishes with whatever is available inexpensively at the supermarket, was his first inspiration to create the fusion cuisines for which The Frying Pan became well known. He brings his zeal for fusion cuisines to this restaurant, pioneering cross-cultural culinary connections."
-        }
+        $scope.specialist = menuFactory.getLeadership().get({id:0});
     }])
 
-    .controller('MenuController', ['$scope', function ($scope) {
-        $scope.dishes = [
-            {
-                "name": "Uthapizza",
-                "image": "images/uthapizza.png",
-                "category": "mains",
-                "label": "Hot",
-                "price": "4.99",
-                "description": "A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.",
-                "comments": [
-                    {
-                        "rating": 5,
-                        "comment": "Imagine all the eatables, living in conFusion!",
-                        "author": "John Lemon"
-                    },
-                    {
-                        "rating": 4,
-                        "comment": "Sends anyone to heaven, I wish I could get my mother-in-law to eat it!",
-                        "author": "Paul McVites"
-                    },
-                    {
-                        "rating": 3,
-                        "comment": "Eat it, just eat it!",
-                        "author": "Michael Jaikishan"
-                    },
-                    {
-                        "rating": 4,
-                        "comment": "Ultimate, Reaching for the stars!",
-                        "author": "Ringo Starry"
-                    },
-                    {
-                        "rating": 2,
-                        "comment": "It's your birthday, we're gonna party!",
-                        "author": "25 Cent"
-                    }
-                ]
-            },
-            {
-                "name": "Zucchipakoda",
-                "image": "images/zucchipakoda.png",
-                "category": "appetizer",
-                "label": "",
-                "price": "1.99",
-                "description": "Deep fried Zucchini coated with mildly spiced Chickpea flour batter accompanied with a sweet-tangy tamarind sauce",
-                "comments": [
-                    {
-                        "rating": 5,
-                        "comment": "Imagine all the eatables, living in conFusion!",
-                        "author": "John Lemon"
-                    },
-                    {
-                        "rating": 4,
-                        "comment": "Sends anyone to heaven, I wish I could get my mother-in-law to eat it!",
-                        "author": "Paul McVites"
-                    },
-                    {
-                        "rating": 3,
-                        "comment": "Eat it, just eat it!",
-                        "author": "Michael Jaikishan"
-                    },
-                    {
-                        "rating": 4,
-                        "comment": "Ultimate, Reaching for the stars!",
-                        "author": "Ringo Starry"
-                    },
-                    {
-                        "rating": 2,
-                        "comment": "It's your birthday, we're gonna party!",
-                        "author": "25 Cent"
-                    }
-                ]
-            },
-            {
-                "name": "Vadonut",
-                "image": "images/vadonut.png",
-                "category": "appetizer",
-                "label": "New",
-                "price": "1.99",
-                "description": "A quintessential ConFusion experience, is it a vada or is it a donut?",
-                "comments": [
-                    {
-                        "rating": 5,
-                        "comment": "Imagine all the eatables, living in conFusion!",
-                        "author": "John Lemon"
-                    },
-                    {
-                        "rating": 4,
-                        "comment": "Sends anyone to heaven, I wish I could get my mother-in-law to eat it!",
-                        "author": "Paul McVites"
-                    },
-                    {
-                        "rating": 3,
-                        "comment": "Eat it, just eat it!",
-                        "author": "Michael Jaikishan"
-                    },
-                    {
-                        "rating": 4,
-                        "comment": "Ultimate, Reaching for the stars!",
-                        "author": "Ringo Starry"
-                    },
-                    {
-                        "rating": 2,
-                        "comment": "It's your birthday, we're gonna party!",
-                        "author": "25 Cent"
-                    }
-                ]
-            },
-            {
-                "name": "ElaiCheese Cake",
-                "image": "images/elaicheesecake.png",
-                "category": "dessert",
-                "label": "",
-                "price": "2.99",
-                "description": "A delectable, semi-sweet New York Style Cheese Cake, with Graham cracker crust and spiced with Indian cardamoms",
-                "comments": [
-                    {
-                        "rating": 5,
-                        "comment": "Imagine all the eatables, living in conFusion!",
-                        "author": "John Lemon"
-                    },
-                    {
-                        "rating": 4,
-                        "comment": "Sends anyone to heaven, I wish I could get my mother-in-law to eat it!",
-                        "author": "Paul McVites"
-                    },
-                    {
-                        "rating": 3,
-                        "comment": "Eat it, just eat it!",
-                        "author": "Michael Jaikishan"
-                    },
-                    {
-                        "rating": 4,
-                        "comment": "Ultimate, Reaching for the stars!",
-                        "author": "Ringo Starry"
-                    },
-                    {
-                        "rating": 2,
-                        "comment": "It's your birthday, we're gonna party!",
-                        "author": "25 Cent"
-                    }
-                ]
-            }
-        ];
+    .controller('MenuController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
+        $scope.dishes = menuFactory.getDishes().query(); 
 
         $scope.selection = '';
 
         $scope.setSelection = function (s) {
             $scope.selection = s;
-            // console.log('setSelction called');
-            // console.log(s);
-            // console.log($scope.selection);
+
         }
 
         $scope.getSelection = function () {
-            // console.log($scope.selection);
-            // console.log('getSelection called');
             return $scope.selection;
         }
 
         $scope.checkSelection = function (s) {
-            // console.log($scope.selection);
-            // console.log('checkSelection called');
             return $scope.selection === s;
         }
     }])
 
-    .controller('AboutController', ['$scope', function ($scope) {
+    .controller('AboutController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
         $scope.historyParagraph = faker.lorem.paragraphs();
         $scope.started = '7th March, 2013'
         $scope.company = faker.company.companyName();
         $scope.turnover = faker.finance.amount(100000, 500000);
         $scope.employees = faker.random.number(100, 300);
 
-        $scope.leadership = [
-            {
-                "name": "Peter Pan",
-                "image": "images/alberto.png",
-                "designation": "Chief Epicurious Officer",
-                "abbr": "CEO",
-                "description": "Our CEO, Peter, credits his hardworking East Asian immigrant parents who undertook the arduous journey to the shores of America with the intention of giving their children the best future. His mother's wizardy in the kitchen whipping up the tastiest dishes with whatever is available inexpensively at the supermarket, was his first inspiration to create the fusion cuisines for which The Frying Pan became well known. He brings his zeal for fusion cuisines to this restaurant, pioneering cross-cultural culinary connections."
-            },
-            {
-                "name": "Dhanasekaran Witherspoon",
-                "image": "images/alberto.png",
-                "designation": "Chief Food Officer",
-                "abbr": "CFO",
-                "description": "Our CFO, Danny, as he is affectionately referred to by his colleagues, comes from a long established family tradition in farming and produce. His experiences growing up on a farm in the Australian outback gave him great appreciation for varieties of food sources. As he puts it in his own words, Everything that runs, wins, and everything that stays, pays!"
-            },
-            {
-                "name": "Agumbe Tang",
-                "image": "images/alberto.png",
-                "designation": "Chief Taste Officer",
-                "abbr": "CTO",
-                "description": "Blessed with the most discerning gustatory sense, Agumbe, our CFO, personally ensures that every dish that we serve meets his exacting tastes. Our chefs dread the tongue lashing that ensues if their dish does not meet his exacting standards. He lives by his motto, You click only if you survive my lick."
-            },
-            {
-                "name": "Alberto Somayya",
-                "image": "images/alberto.png",
-                "designation": "Executive Chef",
-                "abbr": "EC",
-                "description": "Award winning three-star Michelin chef with wide International experience having worked closely with whos-who in the culinary world, he specializes in creating mouthwatering Indo-Italian fusion experiences. He says, Put together the cuisines from the two craziest cultures, and you get a winning hit! Amma Mia!"
-            }
-
-        ];
+        $scope.leadership = menuFactory.getLeadership().query();
     }])
 
     .controller('ContactController', ['$scope', function ($scope) {
@@ -308,7 +85,7 @@ angular.module('shino')
         }
         
         $scope.sendFeedback = function() {
-            console.log($scope.feedback);
+            // console.log($scope.feedback);
 
             $scope.feedback = {
                 mychannel: '',
