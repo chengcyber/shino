@@ -59,7 +59,7 @@ angular.module('shino')
         $scope.leadership = menuFactory.getLeadership().query();
     }])
 
-    .controller('ContactController', ['$scope', function ($scope) {
+    .controller('ContactController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
         $scope.address = {
             streetAddress: faker.address.streetAddress(),
             secondaryAddress: faker.address.secondaryAddress(),
@@ -87,13 +87,21 @@ angular.module('shino')
         $scope.invalidSelection = false;
 
         $scope.sendFeedback = function() {
-            console.log($scope.feedback);
+            // console.log($scope.feedback);
 
+            /**
+             * approve contact, but not select channel
+             */
             if ($scope.feedback.approve && ($scope.feedback.mychannel === '') || !$scope.feedback.mychannel) {
                 $scope.invalidSelection = true;
-                console.log('feedback incorrect');
+                // console.log('feedback incorrect');
                 return ;
-            } 
+            }
+
+            /**
+             * update the sendback
+             */
+            menuFactory.getFeedback().save($scope.feedback);
 
             /**
              * Form Pristine
@@ -115,5 +123,45 @@ angular.module('shino')
 
     .controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', function($scope, $stateParams, menuFactory) {
         $scope.dish = menuFactory.getDishes().get({id: parseInt($stateParams.dishId, 10)});
+        $scope.currentOrder = 'author';
+        $scope.isOrderReverse = false;
+        $scope.setOrder = function(o) {
+            $scope.currentOrder = o;
+            $scope.isOrderReverse = !$scope.isOrderReverse;
+        }
+        $scope.checkOrder = function(o) {
+            return $scope.currentOrder === o;
+        }
+
+        /**
+         * Comment
+         */
+        $scope.comment = {
+            author:'',
+            rating: '5',
+            comment: ''
+        }
+
+        $scope.sendComment = function() {
+            // console.log($scope.comment.rating);
+            $scope.comment.rating = parseInt($scope.comment.rating, 10);
+
+            /**
+             * Push comment to comments
+             * update dish with current comments
+             */
+            // console.log($scope.comment);
+            $scope.dish.comments.push($scope.comment);
+
+            menuFactory.getDishes().update({id: parseInt($stateParams.dishId, 10)}, $scope.dish);
+
+            $scope.commentForm.$setPristine();
+
+            $scope.comment = {
+                author: '',
+                rating: '5',
+                comment: ''
+            }
+        }
     }])
     ;

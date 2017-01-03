@@ -1,7 +1,7 @@
 {
   "dishes": [
     {
-      "id": 0,
+      "id": "0",
       "name": "Uthapizza",
       "image": "images/uthapizza.png",
       "category": "mains",
@@ -38,12 +38,6 @@
           "comment": "It's your birthday, we're gonna party!",
           "author": "25 Cent",
           "date": "2011-12-02T17:57:28.556094Z"
-        },
-        {
-          "rating": 5,
-          "comment": "",
-          "author": "",
-          "date": "2016-11-04T06:10:20.878Z"
         }
       ]
     },

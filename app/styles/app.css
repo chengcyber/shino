@@ -40,6 +40,12 @@
   padding: 10px;
 }
 
+.select-forbidden {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
 .menu {
   list-style: none;

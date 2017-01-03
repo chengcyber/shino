@@ -17,6 +17,9 @@ angular.module('shino')
             },
             getLeadership: function() {
                 return $resource(resUrl + '/leadership/:id');
+            },
+            getFeedback: function() {
+                return $resource(resUrl + '/feedback/:id');
             }
         }
     }])
