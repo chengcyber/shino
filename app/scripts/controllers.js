@@ -97,4 +97,8 @@ angular.module('shino')
             }
         }
     }])
+
+    .controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', function($scope, $stateParams, menuFactory) {
+        $scope.dish = menuFactory.getDishes().get({id: parseInt($stateParams.dishId, 10)});
+    }])
     ;
