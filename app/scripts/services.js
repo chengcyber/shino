@@ -2,24 +2,53 @@
 
 angular.module('shino')
     .constant('resUrl', 'http://localhost:3000')
-    .factory('menuFactory', ['$resource', 'resUrl', function($resource, resUrl) {
+    .factory('resFactory', ['$resource', 'resUrl', function($resource, resUrl) {
         return {
-            getDishes: function() {
+            dishRes: function() {
                 // console.log(resUrl + '/dishes/:id');
                 return $resource(resUrl + '/dishes/:id', null, {
-                    update: {
+                    'update': {
                         method: 'PUT'
                     }
                 });
             },
-            getPromotions: function() {
-                return $resource(resUrl + '/promotions/:id');
+            commentRes: function() {
+                return $resource(resUrl + '/dishes/:id/comments/:commentId', {
+                    id: '@id',
+                    commentId: '@commentId'
+                }, {
+                    'update': {
+                        method: 'PUT'
+                    }
+                })
             },
-            getLeadership: function() {
-                return $resource(resUrl + '/leadership/:id');
+            promotionRes: function() {
+                return $resource(resUrl + '/promotions/:id', null, {
+                    'update': {
+                        method: 'PUT'
+                    }
+                });
             },
-            getFeedback: function() {
-                return $resource(resUrl + '/feedback/:id');
+            leadershipRes: function() {
+                return $resource(resUrl + '/leadership/:id', null, {
+                    'update': {
+                        method: 'PUT'
+                    }
+                });
+            },
+            feedbackRes: function() {
+                return $resource(resUrl + '/feedback/:id', null, {
+                    'update': {
+                        method: 'PUT'
+                    }
+                });
+            },
+            favoriteRes: function() {
+                return $resource(resUrl + '/favorites/:id', null, {
+                    'update': {
+                        method: 'PUT'
+                    }
+                })
             }
         }
     }])

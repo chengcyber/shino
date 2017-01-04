@@ -22,16 +22,47 @@ angular.module('shino')
 
     }])
 
-    .controller('IndexController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
-        $scope.dish = menuFactory.getDishes().get({id: 0});
+    .controller('IndexController', ['$scope', 'resFactory', function ($scope, resFactory) {
+        $scope.dish = resFactory.dishRes().query({
+            feature: true
+        }).$promise.then(
+            // success
+            function (res) {
+                // console.log(res[0]);
+                $scope.dish = res[0];
+            }
+        );
 
-        $scope.promotion = menuFactory.getPromotions().get({id:0});
 
-        $scope.specialist = menuFactory.getLeadership().get({id:0});
+        $scope.promotion = resFactory.promotionRes().query({
+            feature: true
+        }).$promise.then(
+            // success
+            function (res) {
+                $scope.promotion = res[0];
+            }
+        );
+
+        $scope.specialist = resFactory.leadershipRes().query({
+            feature: true
+        }).$promise.then(
+            // success
+            function (res) {
+                $scope.specialist = res[0];
+            }
+        );
+
     }])
 
-    .controller('MenuController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
-        $scope.dishes = menuFactory.getDishes().query(); 
+    .controller('MenuController', ['$scope', 'resFactory', function ($scope, resFactory) {
+        // resFactory.dishRes().query({}).$promise.then(
+        //         function(res) {
+        //             $scope.dishes = res;
+        //             console.log($scope.dishes);
+        //         }
+        //     )
+        $scope.dishes = resFactory.dishRes().query();
+        // console.log($scope.dishes);
 
         $scope.selection = '';
 
@@ -49,17 +80,17 @@ angular.module('shino')
         }
     }])
 
-    .controller('AboutController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
+    .controller('AboutController', ['$scope', 'resFactory', function ($scope, resFactory) {
         $scope.historyParagraph = faker.lorem.paragraphs();
         $scope.started = '7th March, 2013'
         $scope.company = faker.company.companyName();
         $scope.turnover = faker.finance.amount(100000, 500000);
         $scope.employees = faker.random.number(100, 300);
 
-        $scope.leadership = menuFactory.getLeadership().query();
+        $scope.leadership = resFactory.leadershipRes().query();
     }])
 
-    .controller('ContactController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
+    .controller('ContactController', ['$scope', 'resFactory', function ($scope, resFactory) {
         $scope.address = {
             streetAddress: faker.address.streetAddress(),
             secondaryAddress: faker.address.secondaryAddress(),
@@ -83,10 +114,10 @@ angular.module('shino')
         $scope.feedback = {
             approve: false
         }
-        
+
         $scope.invalidSelection = false;
 
-        $scope.sendFeedback = function() {
+        $scope.sendFeedback = function () {
             // console.log($scope.feedback);
 
             /**
@@ -95,20 +126,20 @@ angular.module('shino')
             if ($scope.feedback.approve && ($scope.feedback.mychannel === '') || !$scope.feedback.mychannel) {
                 $scope.invalidSelection = true;
                 // console.log('feedback incorrect');
-                return ;
+                return;
             }
 
             /**
              * update the sendback
              */
-            menuFactory.getFeedback().save($scope.feedback);
+            resFactory.feedbackRes().save($scope.feedback);
 
             /**
              * Form Pristine
              */
             $scope.feedbackForm.$setPristine();
             $scope.invalidSelection = false;
-        
+
             $scope.feedback = {
                 mychannel: '',
                 firstName: '',
@@ -117,19 +148,19 @@ angular.module('shino')
                 email: '',
                 comment: ''
             }
-            
+
         }
     }])
 
-    .controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', function($scope, $stateParams, menuFactory) {
-        $scope.dish = menuFactory.getDishes().get({id: parseInt($stateParams.dishId, 10)});
+    .controller('DishDetailController', ['$scope', '$stateParams', 'resFactory', function ($scope, $stateParams, resFactory) {
+        $scope.dish = resFactory.dishRes().get({id: $stateParams.dishId});
         $scope.currentOrder = 'author';
         $scope.isOrderReverse = false;
-        $scope.setOrder = function(o) {
+        $scope.setOrder = function (o) {
             $scope.currentOrder = o;
             $scope.isOrderReverse = !$scope.isOrderReverse;
         }
-        $scope.checkOrder = function(o) {
+        $scope.checkOrder = function (o) {
             return $scope.currentOrder === o;
         }
 
@@ -137,12 +168,12 @@ angular.module('shino')
          * Comment
          */
         $scope.comment = {
-            author:'',
+            author: '',
             rating: '5',
             comment: ''
         }
 
-        $scope.sendComment = function() {
+        $scope.sendComment = function () {
             // console.log($scope.comment.rating);
             $scope.comment.rating = parseInt($scope.comment.rating, 10);
 
@@ -151,10 +182,24 @@ angular.module('shino')
              * update dish with current comments
              */
             // console.log($scope.comment);
-            $scope.dish.comments.push($scope.comment);
+            // $scope.dish.comments.push($scope.comment);
+            // resFactory.dishRes().update({id: parseInt($stateParams.dishId, 10)}, $scope.dish);
+            var newComment = new resFactory.commentRes({id: $stateParams.dishId});
 
-            menuFactory.getDishes().update({id: parseInt($stateParams.dishId, 10)}, $scope.dish);
+            console.log(resFactory.commentRes({id: $scope.dish._id}).query());
 
+            // for (var property in $scope.comment) {
+            //     if ($scope.comment.hasOwnProperty(property)) {
+            //         newComment[property] = $scope.comment[property];
+            //     }
+            // }
+            console.log(newComment);
+            console.log(typeof newComment.$save);
+
+            // newComment.$save(newComment, function(comment) {
+            //         console.log('Comment Saved: ', comment);
+            //     })
+            
             $scope.commentForm.$setPristine();
 
             $scope.comment = {
@@ -164,4 +209,4 @@ angular.module('shino')
             }
         }
     }])
-    ;
+;
