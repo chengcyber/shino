@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('shino')
-    .constant('resUrl', 'http://localhost:3000')
+    .constant('resUrl', 'https://localhost:3443')
     .factory('resFactory', ['$resource', 'resUrl', function($resource, resUrl) {
         return {
             dishRes: function() {

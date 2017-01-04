@@ -184,22 +184,8 @@ angular.module('shino')
             // console.log($scope.comment);
             // $scope.dish.comments.push($scope.comment);
             // resFactory.dishRes().update({id: parseInt($stateParams.dishId, 10)}, $scope.dish);
-            var newComment = new resFactory.commentRes({id: $stateParams.dishId});
+            resFactory.commentRes().save({id: $scope.dish._id}, $scope.comment);
 
-            console.log(resFactory.commentRes({id: $scope.dish._id}).query());
-
-            // for (var property in $scope.comment) {
-            //     if ($scope.comment.hasOwnProperty(property)) {
-            //         newComment[property] = $scope.comment[property];
-            //     }
-            // }
-            console.log(newComment);
-            console.log(typeof newComment.$save);
-
-            // newComment.$save(newComment, function(comment) {
-            //         console.log('Comment Saved: ', comment);
-            //     })
-            
             $scope.commentForm.$setPristine();
 
             $scope.comment = {
