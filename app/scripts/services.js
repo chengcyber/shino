@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module('shino')
-    .constant('resUrl', 'https://localhost:3443')
-    .factory('resFactory', ['$resource', 'resUrl', function($resource, resUrl) {
+    .constant('resUrl', 'http://localhost:3000')
+    .factory('ResFactory', ['$resource', 'resUrl', function($resource, resUrl) {
         return {
             dishRes: function() {
                 // console.log(resUrl + '/dishes/:id');

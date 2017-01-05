@@ -22,8 +22,8 @@ angular.module('shino')
 
     }])
 
-    .controller('IndexController', ['$scope', 'resFactory', function ($scope, resFactory) {
-        $scope.dish = resFactory.dishRes().query({
+    .controller('IndexController', ['$scope', 'ResFactory', function ($scope, ResFactory) {
+        $scope.dish = ResFactory.dishRes().query({
             feature: true
         }).$promise.then(
             // success
@@ -34,7 +34,7 @@ angular.module('shino')
         );
 
 
-        $scope.promotion = resFactory.promotionRes().query({
+        $scope.promotion = ResFactory.promotionRes().query({
             feature: true
         }).$promise.then(
             // success
@@ -43,7 +43,7 @@ angular.module('shino')
             }
         );
 
-        $scope.specialist = resFactory.leadershipRes().query({
+        $scope.specialist = ResFactory.leadershipRes().query({
             feature: true
         }).$promise.then(
             // success
@@ -54,14 +54,14 @@ angular.module('shino')
 
     }])
 
-    .controller('MenuController', ['$scope', 'resFactory', function ($scope, resFactory) {
-        // resFactory.dishRes().query({}).$promise.then(
+    .controller('MenuController', ['$scope', 'ResFactory', function ($scope, ResFactory) {
+        // ResFactory.dishRes().query({}).$promise.then(
         //         function(res) {
         //             $scope.dishes = res;
         //             console.log($scope.dishes);
         //         }
         //     )
-        $scope.dishes = resFactory.dishRes().query();
+        $scope.dishes = ResFactory.dishRes().query();
         // console.log($scope.dishes);
 
         $scope.selection = '';
@@ -80,17 +80,17 @@ angular.module('shino')
         }
     }])
 
-    .controller('AboutController', ['$scope', 'resFactory', function ($scope, resFactory) {
+    .controller('AboutController', ['$scope', 'ResFactory', function ($scope, ResFactory) {
         $scope.historyParagraph = faker.lorem.paragraphs();
         $scope.started = '7th March, 2013'
         $scope.company = faker.company.companyName();
         $scope.turnover = faker.finance.amount(100000, 500000);
         $scope.employees = faker.random.number(100, 300);
 
-        $scope.leadership = resFactory.leadershipRes().query();
+        $scope.leadership = ResFactory.leadershipRes().query();
     }])
 
-    .controller('ContactController', ['$scope', 'resFactory', function ($scope, resFactory) {
+    .controller('ContactController', ['$scope', 'ResFactory', function ($scope, ResFactory) {
         $scope.address = {
             streetAddress: faker.address.streetAddress(),
             secondaryAddress: faker.address.secondaryAddress(),
@@ -132,7 +132,7 @@ angular.module('shino')
             /**
              * update the sendback
              */
-            resFactory.feedbackRes().save($scope.feedback);
+            ResFactory.feedbackRes().save($scope.feedback);
 
             /**
              * Form Pristine
@@ -152,8 +152,8 @@ angular.module('shino')
         }
     }])
 
-    .controller('DishDetailController', ['$scope', '$stateParams', 'resFactory', function ($scope, $stateParams, resFactory) {
-        $scope.dish = resFactory.dishRes().get({id: $stateParams.dishId});
+    .controller('DishDetailController', ['$scope', '$stateParams', 'ResFactory', function ($scope, $stateParams, ResFactory) {
+        $scope.dish = ResFactory.dishRes().get({id: $stateParams.dishId});
         $scope.currentOrder = 'author';
         $scope.isOrderReverse = false;
         $scope.setOrder = function (o) {
@@ -183,8 +183,8 @@ angular.module('shino')
              */
             // console.log($scope.comment);
             // $scope.dish.comments.push($scope.comment);
-            // resFactory.dishRes().update({id: parseInt($stateParams.dishId, 10)}, $scope.dish);
-            resFactory.commentRes().save({id: $scope.dish._id}, $scope.comment);
+            // ResFactory.dishRes().update({id: parseInt($stateParams.dishId, 10)}, $scope.dish);
+            ResFactory.commentRes().save({id: $scope.dish._id}, $scope.comment);
 
             $scope.commentForm.$setPristine();
 
