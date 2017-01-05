@@ -26,6 +26,7 @@
     "angular-ui-router": "^0.3.2",
     "angular-resource": "^1.6.1",
     "angular-mocks": "^1.6.1",
-    "bootstrap-social": "^5.1.1"
+    "bootstrap-social": "^5.1.1",
+    "ng-dialog": "^0.6.6"
   }
 }

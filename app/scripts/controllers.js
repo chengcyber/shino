@@ -4,6 +4,24 @@ angular.module('shino')
     .controller('HeaderController', ['$scope', function ($scope) {
         $scope.logo = faker.image.imageUrl(60, 60);
         $scope.lorem = faker.lorem.sentence();
+
+        $scope.isSignedIn = false;
+        $scope.username = 'anonymous';
+
+        // pop up signin dialog
+        $scope.openSignIn = function() {
+
+        }
+
+        // pop up signup dialog
+        $scope.openSignUp = function() {
+
+        }
+
+        // pop up signout dialog
+        $scope.openSignOut = function () {
+
+        }
     }])
 
     .controller('FooterController', ['$scope', function ($scope) {

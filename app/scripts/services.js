@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('shino')
-    .constant('resUrl', 'http://localhost:3000')
+    .constant('resUrl', 'https://localhost:3443')
     .factory('ResFactory', ['$resource', 'resUrl', function($resource, resUrl) {
         return {
             dishRes: function() {
@@ -52,5 +52,39 @@ angular.module('shino')
             }
         }
     }])
+    /**
+     * Encapsulation for $window.localStorage
+     */
+    .factory('$localStorage', ['$window', function($window) {
+        return {
+            store: function(key, value) {
+                $window.localStorage[key] = value;
+            },
+            get: function(key, defaultValue) {
+                return $window.localStorage[key] || defaultValue;
+            },
+            remove: function(key) {
+                $window.localStorage.removeItem(key);
+            },
+            storeObject: function(key, value) {
+                $window.localStorage[key] = JSON.stringify(value);
+            },
+            getObject: function(key, defaultValue) {
+                return JSON.parse($window.localStorage[key]) || defaultValue;
+            }
+        }
+    }])
+    // .factory('AuthFactory', ['$localStorage', 'ngDialog', '$resource', 'resUrl', function($localStorage, ngDialog, $resource, resUrl) {
+    //     var authFac = {};
+    //     var isAuthed = false;
+    //
+    //     authFac.isAuthenticated = function() {
+    //         return isAuthed;
+    //     }
+    //
+    //
+    //
+    //     return authFac;
+    // }])
 
     ;
