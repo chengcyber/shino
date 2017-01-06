@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('shino')
-    .constant('resUrl', 'https://localhost:3443')
+    .constant('resUrl', 'https://localhost')
     .factory('ResFactory', ['$resource', 'resUrl', function($resource, resUrl) {
         return {
             dishRes: function() {
@@ -74,17 +74,93 @@ angular.module('shino')
             }
         }
     }])
-    // .factory('AuthFactory', ['$localStorage', 'ngDialog', '$resource', 'resUrl', function($localStorage, ngDialog, $resource, resUrl) {
-    //     var authFac = {};
-    //     var isAuthed = false;
-    //
-    //     authFac.isAuthenticated = function() {
-    //         return isAuthed;
-    //     }
-    //
-    //
-    //
-    //     return authFac;
-    // }])
+    .factory('SignFactory', ['ngDialog', function(ngDialog) {
+        return {
+            openSignInDialog: function() {
+                ngDialog.open({
+                    template: 'views/signin.html',
+                    // scope: $scope,
+                    className: 'ngdialog-theme-default',
+                    controller: 'SignInController'
+                });
+            },
+            openSignUpDialog: function() {
+                ngDialog.open({
+                    template: 'views/signup.html',
+                    // scope: $scope,
+                    className: 'ngdialog-theme-default',
+                    controller: 'SignUpController'
+                });
+            },
+            openSignOutDialog: function() {
+                ngDialog.open({
+                    template: 'views/signout.html',
+                    // scope: $scope,
+                    className: 'ngdialog-theme-default',
+                    controller: 'SignOutController'
+                });
+            },
+            closeDialog: function() {
+                ngDialog.close();
+            }
+        }
+    }])
+    .factory('AuthFactory', ['$http', '$resource', 'resUrl', '$rootScope', '$localStorage', function($http, $resource, resUrl, $rootScope, $localStorage) {
+        var authFac = {};
+        var isAuthed = false;
+        var credentialKey = 'userCredentials';
+        var username = '';
+        var token = '';
+
+        authFac.isAuthenticated = function() {
+            return isAuthed;
+        }
+
+        authFac.getUsername = function() {
+            return username;
+        }
+
+        authFac.loginRes = function () {
+            return $resource(resUrl + '/users/login');
+        }
+
+        authFac.storeCredential = function(t) {
+            $localStorage.storeObject(credentialKey, t);
+        }
+
+        authFac.setAuthUtil = function(o) {
+            isAuthed = true;
+            username = o.username;
+            token = o.token;
+
+            // set x-access-token on header
+            $http.defaults.headers.common['x-access-token'] = token;
+            console.log('token attached: ', token);
+        }
+
+        authFac.login = function(o, cbSuccess, cbFail) {
+            var self = this;
+            this.loginRes().save(o).$promise.then(
+                function(res) {
+                    console.log(res);
+                    var creObj = {
+                        username: o.username,
+                        token: res.token
+                    }
+                    console.log('current Login info: ', creObj);
+                    self.storeCredential(creObj);
+                    self.setAuthUtil(creObj);
+                    $rootScope.$broadcast('login:Success');
+
+                    cbSuccess(res);
+                },
+                function(res) {
+                    cbFail(res);
+                }
+            )
+        }
+
+        return authFac;
+    }])
 
     ;

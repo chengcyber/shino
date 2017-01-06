@@ -33,16 +33,16 @@
                     <!--<button class="btn btn-default navbar-btn">Sign in</button>-->
                     <!--<div ng-show="!isSignedIn">-->
                         <a ng-show="!isSignedIn" href="#"
-                            ng-click="openSignIn()">Sign in</a>
+                            ng-click="openSignInDialog()">Sign in</a>
                         <a ng-show="isSignedIn" href="#">{{username}}</a>
                     <!--</div>-->
                 </li>
                 <li>
                     <!--<div ng-show="!isSignedIn">-->
                         <button ng-show="!isSignedIn" class="btn btn-danger navbar-btn"
-                            ng-click="openSignUp()">Sign up</button>
+                            ng-click="openSignUpDialog()">Sign up</button>
                         <button ng-show="isSignedIn" class="btn btn-default navbar-btn"
-                            ng-click="openSignOut()">Sign out</button>
+                            ng-click="openSignOutDialog()">Sign out</button>
                     <!--</div>-->
                 </li>
             </ul>

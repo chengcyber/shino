@@ -47,6 +47,11 @@
   user-select: none;
 }
 
+.cut-off {
+  margin: 20px 5px;
+  border-bottom: 1px solid black;
+}
+
 .menu {
   list-style: none;
   border-bottom: 0.1em solid black;

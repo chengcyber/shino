@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('shino')
-    .controller('HeaderController', ['$scope', function ($scope) {
+    .controller('HeaderController', ['$scope', 'SignFactory', 'AuthFactory', '$rootScope', function ($scope, SignFactory, AuthFactory, $rootScope) {
         $scope.logo = faker.image.imageUrl(60, 60);
         $scope.lorem = faker.lorem.sentence();
 
@@ -9,19 +9,67 @@ angular.module('shino')
         $scope.username = 'anonymous';
 
         // pop up signin dialog
-        $scope.openSignIn = function() {
-
+        $scope.openSignInDialog = function() {
+            // console.log('HeaderController openSignIn called');
+            SignFactory.openSignInDialog();
+            // ngDialog.open({
+            //     template: '<p>my template</p>',
+            //     plain: true
+            // });
         }
 
         // pop up signup dialog
-        $scope.openSignUp = function() {
-
+        $scope.openSignUpDialog = function() {
+            SignFactory.openSignUpDialog();
         }
 
         // pop up signout dialog
-        $scope.openSignOut = function () {
+        $scope.openSignOutDialog = function () {
+            SignFactory.openSignInDialog();
+        }
+
+        $rootScope.$on('login:Success', function() {
+            $scope.isSignedIn = AuthFactory.isAuthenticated();
+            $scope.username = AuthFactory.getUsername();
+        })
+
+
+    }])
+
+    .controller('SignInController', ['$scope', '$rootScope', 'SignFactory', 'AuthFactory', function($scope, $rootScope, SignFactory, AuthFactory) {
+        $rootScope.ok = true;
+
+        $scope.loginObj = {};
+        $scope.doSignIn = function() {
+            console.log('do sign in now');
+            console.log($scope.loginObj);
+
+            $scope.isLoginFail = false;
+            AuthFactory.login($scope.loginObj, function() {
+                SignFactory.closeDialog();
+            }, function() {
+                $scope.isLoginFail = true;
+            });
 
         }
+
+        /**
+         * Don't have a account, redirect to sign up dialog
+         */
+        $scope.openSignUpDialog = function() {
+            SignFactory.closeDialog();
+            SignFactory.openSignUpDialog();
+        }
+
+    }])
+
+    .controller('SignUpController', ['$scope', function($scope) {
+        $scope.ok = true;
+    }])
+
+    .controller('SignOutController', ['$scope', function($scope) {
+        $scope.ok = true;
+
     }])
 
     .controller('FooterController', ['$scope', function ($scope) {

@@ -1,0 +1,31 @@
+<div class="ngdialog-content">
+  
+    <form name="SignInForm" ng-submit="doSignIn()">
+      <div class="form-group">
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" class="form-control" name="username" value=""
+               placeholder="username" ng-model="loginObj.username" required/>
+      </div>
+      
+      <div class="form-group">
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" class="form-control" name="password" value=""
+               placeholder="password" ng-model="loginObj.password" required/>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-sm btn-success">Log In</button>
+        <button type="button" class="btn btn-sm btn-default">Cancel</button>
+        <a href="#" class="small pull-right text-center"
+            ng-click="openSignUpDialog()">Don't have account?</a>
+      </div>
+    </form>
+
+    <div ng-class="{'has-error': isLoginFail}">
+        <span class="help-block small" ng-show="isLoginFail">Invalid username/password.</span>
+    </div>
+
+    <div class="cut-off"></div>
+    <h5>Or, Sign in with other account</h5>
+
+</div>
