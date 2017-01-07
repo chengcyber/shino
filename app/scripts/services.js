@@ -120,14 +120,30 @@ angular.module('shino')
             return username;
         }
 
+        /**
+         * REST API on resURL + '/users/login'
+         */
         authFac.loginRes = function () {
             return $resource(resUrl + '/users/login');
         }
 
+        /**
+         * REST API on resURL + '/users/logout'
+         */
+        authFac.logoutRes = function () {
+            return $resource(resUrl + '/users/logout');
+        }
+
+        /**
+         * Store user info (username, token) to $localStorage
+         */
         authFac.storeCredential = function(t) {
             $localStorage.storeObject(credentialKey, t);
         }
 
+        /**
+         * Set in-line auth status as login
+         */
         authFac.setAuthUtil = function(o) {
             isAuthed = true;
             username = o.username;
@@ -138,6 +154,11 @@ angular.module('shino')
             console.log('token attached: ', token);
         }
 
+        /**
+         * User login, POST username and password to /users/login
+         * then save the username and given token to $localStorage,
+         * update inline auth status, then broadcast 'login:Success' sign to $rootScope.
+         */
         authFac.login = function(o, cbSuccess, cbFail) {
             var self = this;
             this.loginRes().save(o).$promise.then(
@@ -159,6 +180,42 @@ angular.module('shino')
                 }
             )
         }
+        
+        /**
+         * destory saved user info in $localStorage
+         */
+        authFac.destoryCredential = function() {
+            $localStorage.storeObject(credentialKey, null);
+        }
+
+        /**
+         * Update in-line auth status as logout
+         */
+        authFac.unsetAuthUtil = function() {
+            isAuthed = false;
+            username = '';
+            token = '';
+        }
+
+        /**
+         * User logout, GET /users/logout
+         * destory the saved user info in $localStorage,
+         * update inline auth status, then broadcast 'logout:Success' sign to $rootScope.
+         */
+        authFac.logout = function(cb) {
+            var self = this;
+            self.logoutRes().get(function(res) {
+                console.log(res);
+            })
+            self.destoryCredential();
+            self.unsetAuthUtil();
+            $rootScope.$broadcast('logout:Success');
+            
+            if(typeof cb === 'function') {
+                cb();
+            }
+        }
+        
 
         return authFac;
     }])

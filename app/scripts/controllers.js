@@ -25,7 +25,7 @@ angular.module('shino')
 
         // pop up signout dialog
         $scope.openSignOutDialog = function () {
-            SignFactory.openSignInDialog();
+            SignFactory.openSignOutDialog();
         }
 
         $rootScope.$on('login:Success', function() {
@@ -33,11 +33,15 @@ angular.module('shino')
             $scope.username = AuthFactory.getUsername();
         })
 
+        $rootScope.$on('logout:Success', function() {
+            $scope.isSignedIn = AuthFactory.isAuthenticated();
+            $scope.username = AuthFactory.getUsername();
+        });
+
 
     }])
 
-    .controller('SignInController', ['$scope', '$rootScope', 'SignFactory', 'AuthFactory', function($scope, $rootScope, SignFactory, AuthFactory) {
-        $rootScope.ok = true;
+    .controller('SignInController', ['$scope', 'SignFactory', 'AuthFactory', function($scope, SignFactory, AuthFactory) {
 
         $scope.loginObj = {};
         $scope.doSignIn = function() {
@@ -67,8 +71,14 @@ angular.module('shino')
         $scope.ok = true;
     }])
 
-    .controller('SignOutController', ['$scope', function($scope) {
-        $scope.ok = true;
+    .controller('SignOutController', ['$scope', 'AuthFactory', 'SignFactory', function($scope, AuthFactory, SignFactory) {
+        $scope.doLogOut = function() {
+            AuthFactory.logout(function() {
+                SignFactory.closeDialog();
+            });
+            console.log('user log out now');
+        }
+
 
     }])
 
