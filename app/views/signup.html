@@ -1,1 +1,55 @@
-<p>Sign up dialog</p>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-11 col-xs-offset-1 col-sm-10 col-sm-offset-2">
+      <h2>Sign Up</h2>
+    </div>
+  </div>
+    
+  <div class="row row-content">
+    <div class="col-xs-12 col-sm-4 col-sm-offset-1">
+
+      <form role="form" name="SignUpForm" ng-submit="doRegister()" novalidate>
+      
+        <div class="form-group" ng-class="{'has-error': !SignUpForm.username.$pristine && SignUpForm.username.$error.required}">
+          <label for="username" class="sr-only">Username</label>
+          <input type="text" name="username" value="" class="form-control"
+            placeholder="username" ng-model="regObj.username" required>
+          <span class="help-block small"
+            ng-show="!SignUpForm.username.$pristine && SignUpForm.username.$error.required">Username is required</span>
+        </div>
+        
+        <div class="form-group" ng-class="{'has-error': !SignUpForm.password.$pristine && SignUpForm.password.$error.required}">
+          <label for="password" class="sr-only">Password</label>
+          <input type="password" name="password" value="" class="form-control"
+            placeholder="password" ng-model="regObj.password" required>
+          <span class="help-block small"
+            ng-show="!SignUpForm.password.$pristine && SignUpForm.password.$error.required">Password is required</span>
+        </div>
+
+        <div class="form-group" 
+          ng-class="{'has-error': !SignUpForm.password2.$pristine && SignUpForm.password2.$error.required || SignUpForm.password2.$error.passMatch}">
+          <input type="password" name="password2" value="" class="form-control"
+            placeholder="confirm password" ng-model="regObj.password2"
+            pass-match="regObj.password" required>
+          <span class="help-block small"
+            ng-show="!SignUpForm.password2.$pristine && SignUpForm.password2.$error.required">Please confirm passowrd</span>
+          <span class="help-block small"
+            ng-show="!SignUpForm.password2.$pristine && SignUpForm.password2.$error.passMatch">confirm incorrect, please check</span>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-sm btn-success" ng-disabled="SignUpForm.$invalid">Register</button>
+        </div>
+      </form> 
+
+      <div class="has-error">
+        <span class="help-block">{{regFailMsg}}</span>
+      </div>
+
+    </div>
+    
+    <div class="col-xs-12 col-sm-4 col-sm-offset-2">
+      123
+    </div>
+  </div>
+</div>

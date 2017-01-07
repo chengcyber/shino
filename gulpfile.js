@@ -45,7 +45,7 @@ gulp.task('usemin', ['eslint'], function () {
         .pipe(usemin({
             css: [cleanCss(), rev()],
             js: [ngAnnotate(),
-                uglify(),
+                // uglify(),
                 rev()]
         }))
         .pipe(gulp.dest('dist/'));

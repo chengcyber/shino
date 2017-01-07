@@ -64,8 +64,20 @@ angular.module('shino', [
                     controller: 'DishDetailController'
                 }
             }
-        });
+        })
+        // route for the register page
+        .state('app.register', {
+            url: 'register',
+            views: {
+                'content@': {
+                    templateUrl: 'views/signup.html',
+                    controller: 'SignUpController'
+                }
+            }
+        })
+        ;
 
     // visit other page redirect to home page
     $urlRouterProvider.otherwise('/');
-}]);
+}])
+;
