@@ -135,6 +135,13 @@ angular.module('shino')
         }
 
         /**
+         * REST API on resURL + '/users/register'
+         */
+        authFac.regRes = function() {
+            return $resource(resUrl + '/users/register');
+        }
+
+        /**
          * Store user info (username, token) to $localStorage
          */
         authFac.storeCredential = function(t) {
@@ -158,6 +165,9 @@ angular.module('shino')
          * User login, POST username and password to /users/login
          * then save the username and given token to $localStorage,
          * update inline auth status, then broadcast 'login:Success' sign to $rootScope.
+         * @o: loginData, {username:'foo', password: 'bar'}
+         * @cbSuccess: callback function when success
+         * @cbFail: callback function when fail
          */
         authFac.login = function(o, cbSuccess, cbFail) {
             var self = this;
@@ -173,10 +183,14 @@ angular.module('shino')
                     self.setAuthUtil(creObj);
                     $rootScope.$broadcast('login:Success');
 
-                    cbSuccess(res);
+                    if (typeof cbSuccess === 'function') {
+                        cbSuccess(res);
+                    }
                 },
                 function(res) {
-                    cbFail(res);
+                    if (typeof cbFail === 'function') {
+                        cbFail(res);
+                    }
                 }
             )
         }
@@ -216,6 +230,28 @@ angular.module('shino')
             }
         }
         
+        /**
+         * User register, POST /users/register
+         * if success, then login automatically, called in controller, not here
+         * @o: regObj to register
+         * @cbSuccess: callback function when success
+         * @cbFail: callback function when fail
+         */
+        authFac.register = function(o, cbSuccess, cbFail) {
+            var self = this;
+            self.regRes().save(o).$promise.then(
+                function(res) {
+                    if (typeof cbSuccess === 'function') {
+                        cbSuccess(res);
+                    }
+                },
+                function(res) {
+                    if (typeof cbFail === 'function') {
+                        cbFail(res);
+                    }
+                }
+            );
+        }
 
         return authFac;
     }])

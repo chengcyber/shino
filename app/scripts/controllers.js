@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('shino')
-    .controller('HeaderController', ['$scope', 'SignFactory', 'AuthFactory', '$rootScope', function ($scope, SignFactory, AuthFactory, $rootScope) {
+    .controller('HeaderController', ['$scope', 'SignFactory', '$state', 'AuthFactory', '$rootScope', function ($scope, SignFactory, $state, AuthFactory, $rootScope) {
         $scope.logo = faker.image.imageUrl(60, 60);
         $scope.lorem = faker.lorem.sentence();
 
@@ -18,9 +18,12 @@ angular.module('shino')
             // });
         }
 
-        // pop up signup dialog
-        $scope.openSignUpDialog = function() {
-            SignFactory.openSignUpDialog();
+        // // pop up signup dialog
+        // $scope.openSignUpDialog = function() {
+        //     SignFactory.openSignUpDialog();
+        // }
+        $scope.goToRegister = function() {
+            $state.go('app.register');
         }
 
         // pop up signout dialog
@@ -67,8 +70,24 @@ angular.module('shino')
 
     }])
 
-    .controller('SignUpController', ['$scope', function($scope) {
-        $scope.ok = true;
+    .controller('SignUpController', ['$scope', 'AuthFactory', '$state', function($scope, AuthFactory, $state) {
+    
+        $scope.regObj = {};
+        $scope.regFailMsg = '';
+
+        $scope.doRegister = function() {
+            console.log('do reg now');
+            $scope.regFailMsg = '';
+            AuthFactory.register($scope.regObj, function() {
+                console.log('reg success');
+                AuthFactory.login($scope.regObj);
+                $state.go('app');
+            }, function(res) {
+                $scope.regFailMsg = res.data.err.message;
+                console.log($scope.regFailMsg);
+            })
+            
+        }
     }])
 
     .controller('SignOutController', ['$scope', 'AuthFactory', 'SignFactory', function($scope, AuthFactory, SignFactory) {
