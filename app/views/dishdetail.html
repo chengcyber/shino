@@ -43,22 +43,22 @@
             <blockquote ng-repeat="comment in dish.comments | orderBy:currentOrder:isOrderReverse">
                 <p>{{comment.rating}} Stars</p>
                 <p>{{comment.comment}}</p>
-                <footer>{{comment.author}}, {{comment.date | date: 'MMM, dd, y'}}</footer>
+                <footer>{{comment.postBy.username}}, {{comment.updatedAt | date: 'MMM, dd, y'}}</footer>
             </blockquote>
         </div>
 
-        <div class="col-xs-9 col-xs-offset-1">
+        <div class="col-xs-9 col-xs-offset-1" ng-show="isLogedIn">
             <div ng-show="commentForm.$valid && !commentForm.$pristine">
                 <h5>Comment Preview</h5>
                 <blockquote>
                     <p>{{comment.rating}} Stars</p>
                     <p>{{comment.comment}}</p>
-                    <footer>{{comment.author}}, {{comment.date | date: 'MMM, dd, y'}}</footer>
+                    <footer>{{username}}, {{currentDate | date: 'MMM, dd, y'}}</footer>
                 </blockquote>
             </div>
 
             <form class="form-horizontal" name="commentForm" ng-submit="sendComment()" novalidate>
-                <div class="form-group"
+                <!--<div class="form-group"
                      ng-class="{'has-error': !commentForm.author.$pristine && commentForm.author.$error.required}">
                     <label for="author" class="col-sm-2 control-label">Your Name</label>
                     <div class="col-sm-10">
@@ -69,7 +69,7 @@
             Your name is required
                     </div>
                     </span>
-                </div>
+                </div>-->
 
                 <div class="form-group">
                     <label for="" class="col-sm-2 control-label">

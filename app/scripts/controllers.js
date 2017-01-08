@@ -9,7 +9,7 @@ angular.module('shino')
         $scope.username = 'anonymous';
 
         // pop up signin dialog
-        $scope.openSignInDialog = function() {
+        $scope.openSignInDialog = function () {
             // console.log('HeaderController openSignIn called');
             SignFactory.openSignInDialog();
             // ngDialog.open({
@@ -22,7 +22,7 @@ angular.module('shino')
         // $scope.openSignUpDialog = function() {
         //     SignFactory.openSignUpDialog();
         // }
-        $scope.goToRegister = function() {
+        $scope.goToRegister = function () {
             $state.go('app.register');
         }
 
@@ -31,12 +31,12 @@ angular.module('shino')
             SignFactory.openSignOutDialog();
         }
 
-        $rootScope.$on('login:Success', function() {
+        $rootScope.$on('login:Success', function () {
             $scope.isSignedIn = AuthFactory.isAuthenticated();
             $scope.username = AuthFactory.getUsername();
         })
 
-        $rootScope.$on('logout:Success', function() {
+        $rootScope.$on('logout:Success', function () {
             $scope.isSignedIn = AuthFactory.isAuthenticated();
             $scope.username = AuthFactory.getUsername();
         });
@@ -44,17 +44,17 @@ angular.module('shino')
 
     }])
 
-    .controller('SignInController', ['$scope', 'SignFactory', 'AuthFactory', function($scope, SignFactory, AuthFactory) {
+    .controller('SignInController', ['$scope', 'SignFactory', 'AuthFactory', function ($scope, SignFactory, AuthFactory) {
 
         $scope.loginObj = {};
-        $scope.doSignIn = function() {
+        $scope.doSignIn = function () {
             console.log('do sign in now');
             console.log($scope.loginObj);
 
             $scope.isLoginFail = false;
-            AuthFactory.login($scope.loginObj, function() {
+            AuthFactory.login($scope.loginObj, function () {
                 SignFactory.closeDialog();
-            }, function() {
+            }, function () {
                 $scope.isLoginFail = true;
             });
 
@@ -63,36 +63,36 @@ angular.module('shino')
         /**
          * Don't have a account, redirect to sign up dialog
          */
-        $scope.openSignUpDialog = function() {
+        $scope.openSignUpDialog = function () {
             SignFactory.closeDialog();
             SignFactory.openSignUpDialog();
         }
 
     }])
 
-    .controller('SignUpController', ['$scope', 'AuthFactory', '$state', function($scope, AuthFactory, $state) {
-    
+    .controller('SignUpController', ['$scope', 'AuthFactory', '$state', function ($scope, AuthFactory, $state) {
+
         $scope.regObj = {};
         $scope.regFailMsg = '';
 
-        $scope.doRegister = function() {
+        $scope.doRegister = function () {
             console.log('do reg now');
             $scope.regFailMsg = '';
-            AuthFactory.register($scope.regObj, function() {
+            AuthFactory.register($scope.regObj, function () {
                 console.log('reg success');
                 AuthFactory.login($scope.regObj);
                 $state.go('app');
-            }, function(res) {
+            }, function (res) {
                 $scope.regFailMsg = res.data.err.message;
                 console.log($scope.regFailMsg);
             })
-            
+
         }
     }])
 
-    .controller('SignOutController', ['$scope', 'AuthFactory', 'SignFactory', function($scope, AuthFactory, SignFactory) {
-        $scope.doLogOut = function() {
-            AuthFactory.logout(function() {
+    .controller('SignOutController', ['$scope', 'AuthFactory', 'SignFactory', function ($scope, AuthFactory, SignFactory) {
+        $scope.doLogOut = function () {
+            AuthFactory.logout(function () {
                 SignFactory.closeDialog();
             });
             console.log('user log out now');
@@ -126,7 +126,7 @@ angular.module('shino')
                 // console.log(res[0]);
                 $scope.dish = res[0];
             }
-        );
+            );
 
 
         $scope.promotion = ResFactory.promotionRes().query({
@@ -136,7 +136,7 @@ angular.module('shino')
             function (res) {
                 $scope.promotion = res[0];
             }
-        );
+            );
 
         $scope.specialist = ResFactory.leadershipRes().query({
             feature: true
@@ -145,7 +145,7 @@ angular.module('shino')
             function (res) {
                 $scope.specialist = res[0];
             }
-        );
+            );
 
     }])
 
@@ -247,9 +247,10 @@ angular.module('shino')
         }
     }])
 
-    .controller('DishDetailController', ['$scope', '$stateParams', 'ResFactory', function ($scope, $stateParams, ResFactory) {
-        $scope.dish = ResFactory.dishRes().get({id: $stateParams.dishId});
-        $scope.currentOrder = 'author';
+    .controller('DishDetailController', ['$scope', '$stateParams', 'ResFactory', 'AuthFactory', '$rootScope', '$state', function ($scope, $stateParams, ResFactory, AuthFactory, $rootScope, $state) {
+        $scope.dish = ResFactory.dishRes().get({ id: $stateParams.dishId });
+        $scope.currentOrder = 'date';
+        $scope.currentDate = new Date();
         $scope.isOrderReverse = false;
         $scope.setOrder = function (o) {
             $scope.currentOrder = o;
@@ -263,7 +264,7 @@ angular.module('shino')
          * Comment
          */
         $scope.comment = {
-            author: '',
+            _id: '',
             rating: '5',
             comment: ''
         }
@@ -272,6 +273,8 @@ angular.module('shino')
             // console.log($scope.comment.rating);
             $scope.comment.rating = parseInt($scope.comment.rating, 10);
 
+            $scope.comment._id = $scope.userId;
+
             /**
              * Push comment to comments
              * update dish with current comments
@@ -279,15 +282,45 @@ angular.module('shino')
             // console.log($scope.comment);
             // $scope.dish.comments.push($scope.comment);
             // ResFactory.dishRes().update({id: parseInt($stateParams.dishId, 10)}, $scope.dish);
-            ResFactory.commentRes().save({id: $scope.dish._id}, $scope.comment);
+            ResFactory.commentRes().save({ id: $scope.dish._id }, $scope.comment)
+                .$promise.then(
+                    function() {
+                        $state.reload();
+                    },
+                    function() {
+                        console.log('send comment failed');
+                    }
+                );
 
             $scope.commentForm.$setPristine();
 
             $scope.comment = {
-                author: '',
+                _id: '',
                 rating: '5',
                 comment: ''
             }
         }
+
+        /**
+         * refresh log status when user login/logout
+         */
+        $scope.refreshLogStat = function () {
+            $scope.isLogedIn = AuthFactory.isAuthenticated();
+            $scope.username = AuthFactory.getUsername();
+            $scope.userId = AuthFactory.getUserId();
+        }
+
+        // first fresh
+        $scope.refreshLogStat();
+
+        // update when user login/logout
+        $rootScope.$on('login:Success', function () {
+            $scope.refreshLogStat();
+        });
+
+        $rootScope.$on('logout:Success', function () {
+            $scope.refreshLogStat();
+        });
+
     }])
-;
+    ;
