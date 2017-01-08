@@ -109,7 +109,8 @@ angular.module('shino')
         var isAuthed = false;
         var credentialKey = 'userCredentials';
         var username = '';
-        var token = '';
+        var token = void 0;
+        var userId = void 0;
 
         authFac.isAuthenticated = function() {
             return isAuthed;
@@ -117,6 +118,10 @@ angular.module('shino')
 
         authFac.getUsername = function() {
             return username;
+        }
+
+        authFac.getUserId = function() {
+            return userId;
         }
 
         /**
@@ -154,6 +159,7 @@ angular.module('shino')
             isAuthed = true;
             username = o.username;
             token = o.token;
+            userId = o.userId
 
             // set x-access-token on header
             $http.defaults.headers.common['x-access-token'] = token;
@@ -175,6 +181,7 @@ angular.module('shino')
                     console.log(res);
                     var creObj = {
                         username: o.username,
+                        userId: res.userId,
                         token: res.token
                     }
                     console.log('current Login info: ', creObj);
@@ -207,7 +214,8 @@ angular.module('shino')
         authFac.unsetAuthUtil = function() {
             isAuthed = false;
             username = '';
-            token = '';
+            userId = void 0;
+            token = void 0;
         }
 
         /**
