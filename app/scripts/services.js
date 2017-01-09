@@ -268,8 +268,8 @@ angular.module('shino')
             var self = this;
             self.loginRes().get(function(res) {
                 console.log('verify success', res);
-                console.log(self.isAuthed, self.username);
-                $rootScope.$on('login:Success');                
+                console.log(isAuthed, username);
+                $rootScope.$broadcast('login:Success');                
             }, function(res) {
                 console.log('verify fail', res);
                 self.logout();
@@ -286,7 +286,7 @@ angular.module('shino')
             // localStorage have credentials
             if (credential && credential.token) {
                 self.setAuthUtil(credential);
-                console.log(self.isAuthed, self.username);
+                console.log(isAuthed, username);
                 // validate local token
                 self.verifyAuth();    
             }

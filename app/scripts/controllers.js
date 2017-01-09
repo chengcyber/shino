@@ -37,6 +37,7 @@ angular.module('shino')
         }
 
         $rootScope.$on('login:Success', function () {
+            console.log('broadcast login:Success');
             $scope.isSignedIn = AuthFactory.isAuthenticated();
             $scope.username = AuthFactory.getUsername();
         })
