@@ -8,6 +8,11 @@ angular.module('shino')
         $scope.isSignedIn = false;
         $scope.username = 'anonymous';
 
+        /**
+         * load local credential in localstorage
+         */
+        AuthFactory.loadCredential();
+
         // pop up signin dialog
         $scope.openSignInDialog = function () {
             // console.log('HeaderController openSignIn called');
@@ -41,7 +46,7 @@ angular.module('shino')
             $scope.username = AuthFactory.getUsername();
         });
 
-        AuthFactory.loadCredential();
+        
 
 
     }])

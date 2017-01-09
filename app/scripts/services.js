@@ -264,6 +264,17 @@ angular.module('shino')
         /**
          * Check the login token is expired by get /user/login
          */
+        authFac.verifyAuth = function() {
+            var self = this;
+            self.loginRes().get(function(res) {
+                console.log('verify success', res);
+                console.log(self.isAuthed, self.username);
+                $rootScope.$on('login:Success');                
+            }, function(res) {
+                console.log('verify fail', res);
+                self.logout();
+            });
+        }
 
         /**
          * load login data from localStorage
@@ -271,14 +282,13 @@ angular.module('shino')
         authFac.loadCredential = function () {
             var self = this;
             var credential = $localStorage.getObject(credentialKey, {});
+            console.log('credential', credential);
             // localStorage have credentials
             if (credential && credential.token) {
-
-                // validate expired
-                if (!self.isAuthExpired) {
-                    this.setAuthUtil(credential);
-                    $rootScope.$broadcast('login:Success');
-                }
+                self.setAuthUtil(credential);
+                console.log(self.isAuthed, self.username);
+                // validate local token
+                self.verifyAuth();    
             }
         }
 
