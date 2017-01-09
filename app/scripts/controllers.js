@@ -288,7 +288,7 @@ angular.module('shino')
                 .$promise.then(
                 function () {
                     $state.reload();
-                    
+
                     $scope.commentForm.$setPristine();
                     $scope.comment = {
                         _id: '',
@@ -297,6 +297,7 @@ angular.module('shino')
                     }
                 },
                 function (res) {
+                    $scope.comment.rating =  $scope.comment.rating + '';
                     console.log('send comment failed', res);
                 }
                 );
