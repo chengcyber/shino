@@ -5,9 +5,9 @@
 }
 
 .img-banner {
-  /*background-image: url("../images/uthapizza.png");
-  background-repeat: no-repeat;*/
-  background-color: #0FFFFF;
+  /*background-color: #0FFFFF;*/
+  /*background-image: url("../images/banner.jpg");*/
+  background: linear-gradient(to bottom right, dodgerblue, greenyellow);
   enable-background: true;
 }
 
