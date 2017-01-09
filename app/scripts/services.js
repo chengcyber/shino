@@ -1,9 +1,9 @@
 'use strict'
 
 angular.module('shino')
-    .factory('ResFactory', ['$resource', 'resUrl', function($resource, resUrl) {
+    .factory('ResFactory', ['$resource', 'resUrl', function ($resource, resUrl) {
         return {
-            dishRes: function() {
+            dishRes: function () {
                 // console.log(resUrl + '/dishes/:id');
                 return $resource(resUrl + '/dishes/:id', null, {
                     'update': {
@@ -11,38 +11,39 @@ angular.module('shino')
                     }
                 });
             },
-            commentRes: function() {
+            commentRes: function () {
                 return $resource(resUrl + '/dishes/:id/comments/:commentId', {
                     id: '@id',
                     commentId: '@commentId'
-                }, {
-                    'update': {
-                        method: 'PUT'
-                    }
-                })
+                },
+                    {
+                        'update': {
+                            method: 'PUT'
+                        }
+                    })
             },
-            promotionRes: function() {
+            promotionRes: function () {
                 return $resource(resUrl + '/promotions/:id', null, {
                     'update': {
                         method: 'PUT'
                     }
                 });
             },
-            leadershipRes: function() {
+            leadershipRes: function () {
                 return $resource(resUrl + '/leadership/:id', null, {
                     'update': {
                         method: 'PUT'
                     }
                 });
             },
-            feedbackRes: function() {
+            feedbackRes: function () {
                 return $resource(resUrl + '/feedback/:id', null, {
                     'update': {
                         method: 'PUT'
                     }
                 });
             },
-            favoriteRes: function() {
+            favoriteRes: function () {
                 return $resource(resUrl + '/favorites/:id', null, {
                     'update': {
                         method: 'PUT'
@@ -54,28 +55,28 @@ angular.module('shino')
     /**
      * Encapsulation for $window.localStorage
      */
-    .factory('$localStorage', ['$window', function($window) {
+    .factory('$localStorage', ['$window', function ($window) {
         return {
-            store: function(key, value) {
+            store: function (key, value) {
                 $window.localStorage[key] = value;
             },
-            get: function(key, defaultValue) {
+            get: function (key, defaultValue) {
                 return $window.localStorage[key] || defaultValue;
             },
-            remove: function(key) {
+            remove: function (key) {
                 $window.localStorage.removeItem(key);
             },
-            storeObject: function(key, value) {
+            storeObject: function (key, value) {
                 $window.localStorage[key] = JSON.stringify(value);
             },
-            getObject: function(key, defaultValue) {
+            getObject: function (key, defaultValue) {
                 return JSON.parse($window.localStorage[key]) || defaultValue;
             }
         }
     }])
-    .factory('SignFactory', ['ngDialog', function(ngDialog) {
+    .factory('SignFactory', ['ngDialog', function (ngDialog) {
         return {
-            openSignInDialog: function() {
+            openSignInDialog: function () {
                 ngDialog.open({
                     template: 'views/signin.html',
                     // scope: $scope,
@@ -83,7 +84,7 @@ angular.module('shino')
                     controller: 'SignInController'
                 });
             },
-            openSignUpDialog: function() {
+            openSignUpDialog: function () {
                 ngDialog.open({
                     template: 'views/signup.html',
                     // scope: $scope,
@@ -91,7 +92,7 @@ angular.module('shino')
                     controller: 'SignUpController'
                 });
             },
-            openSignOutDialog: function() {
+            openSignOutDialog: function () {
                 ngDialog.open({
                     template: 'views/signout.html',
                     // scope: $scope,
@@ -99,12 +100,12 @@ angular.module('shino')
                     controller: 'SignOutController'
                 });
             },
-            closeDialog: function() {
+            closeDialog: function () {
                 ngDialog.close();
             }
         }
     }])
-    .factory('AuthFactory', ['$http', '$resource', 'resUrl', '$rootScope', '$localStorage', function($http, $resource, resUrl, $rootScope, $localStorage) {
+    .factory('AuthFactory', ['$http', '$resource', 'resUrl', '$rootScope', '$localStorage', function ($http, $resource, resUrl, $rootScope, $localStorage) {
         var authFac = {};
         var isAuthed = false;
         var credentialKey = 'userCredentials';
@@ -112,15 +113,15 @@ angular.module('shino')
         var token = void 0;
         var userId = void 0;
 
-        authFac.isAuthenticated = function() {
+        authFac.isAuthenticated = function () {
             return isAuthed;
         }
 
-        authFac.getUsername = function() {
+        authFac.getUsername = function () {
             return username;
         }
 
-        authFac.getUserId = function() {
+        authFac.getUserId = function () {
             return userId;
         }
 
@@ -141,21 +142,21 @@ angular.module('shino')
         /**
          * REST API on resURL + '/users/register'
          */
-        authFac.regRes = function() {
+        authFac.regRes = function () {
             return $resource(resUrl + '/users/register');
         }
 
         /**
          * Store user info (username, token) to $localStorage
          */
-        authFac.storeCredential = function(t) {
+        authFac.storeCredential = function (t) {
             $localStorage.storeObject(credentialKey, t);
         }
 
         /**
          * Set in-line auth status as login
          */
-        authFac.setAuthUtil = function(o) {
+        authFac.setAuthUtil = function (o) {
             isAuthed = true;
             username = o.username;
             token = o.token;
@@ -174,10 +175,10 @@ angular.module('shino')
          * @cbSuccess: callback function when success
          * @cbFail: callback function when fail
          */
-        authFac.login = function(o, cbSuccess, cbFail) {
+        authFac.login = function (o, cbSuccess, cbFail) {
             var self = this;
             this.loginRes().save(o).$promise.then(
-                function(res) {
+                function (res) {
                     console.log(res);
                     var creObj = {
                         username: o.username,
@@ -193,25 +194,25 @@ angular.module('shino')
                         cbSuccess(res);
                     }
                 },
-                function(res) {
+                function (res) {
                     if (typeof cbFail === 'function') {
                         cbFail(res);
                     }
                 }
             )
         }
-        
+
         /**
          * destory saved user info in $localStorage
          */
-        authFac.destoryCredential = function() {
+        authFac.destoryCredential = function () {
             $localStorage.storeObject(credentialKey, null);
         }
 
         /**
          * Update in-line auth status as logout
          */
-        authFac.unsetAuthUtil = function() {
+        authFac.unsetAuthUtil = function () {
             isAuthed = false;
             username = '';
             userId = void 0;
@@ -223,20 +224,20 @@ angular.module('shino')
          * destory the saved user info in $localStorage,
          * update inline auth status, then broadcast 'logout:Success' sign to $rootScope.
          */
-        authFac.logout = function(cb) {
+        authFac.logout = function (cb) {
             var self = this;
-            self.logoutRes().get(function(res) {
+            self.logoutRes().get(function (res) {
                 console.log(res);
             })
             self.destoryCredential();
             self.unsetAuthUtil();
             $rootScope.$broadcast('logout:Success');
-            
-            if(typeof cb === 'function') {
+
+            if (typeof cb === 'function') {
                 cb();
             }
         }
-        
+
         /**
          * User register, POST /users/register
          * if success, then login automatically, called in controller, not here
@@ -244,20 +245,41 @@ angular.module('shino')
          * @cbSuccess: callback function when success
          * @cbFail: callback function when fail
          */
-        authFac.register = function(o, cbSuccess, cbFail) {
+        authFac.register = function (o, cbSuccess, cbFail) {
             var self = this;
             self.regRes().save(o).$promise.then(
-                function(res) {
+                function (res) {
                     if (typeof cbSuccess === 'function') {
                         cbSuccess(res);
                     }
                 },
-                function(res) {
+                function (res) {
                     if (typeof cbFail === 'function') {
                         cbFail(res);
                     }
                 }
             );
+        }
+
+        /**
+         * Check the login token is expired by get /user/login
+         */
+
+        /**
+         * load login data from localStorage
+         */
+        authFac.loadCredential = function () {
+            var self = this;
+            var credential = $localStorage.getObject(credentialKey, {});
+            // localStorage have credentials
+            if (credential && credential.token) {
+
+                // validate expired
+                if (!self.isAuthExpired) {
+                    this.setAuthUtil(credential);
+                    $rootScope.$broadcast('login:Success');
+                }
+            }
         }
 
         return authFac;

@@ -41,6 +41,8 @@ angular.module('shino')
             $scope.username = AuthFactory.getUsername();
         });
 
+        AuthFactory.loadCredential();
+
 
     }])
 
