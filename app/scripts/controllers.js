@@ -52,7 +52,7 @@ angular.module('shino')
 
     }])
 
-    .controller('SignInController', ['$scope', 'SignFactory', 'AuthFactory', function ($scope, SignFactory, AuthFactory) {
+    .controller('SignInController', ['$scope', 'SignFactory', 'AuthFactory', '$state', function ($scope, SignFactory, AuthFactory, $state) {
 
         $scope.loginObj = {};
         $scope.doSignIn = function () {
@@ -71,9 +71,10 @@ angular.module('shino')
         /**
          * Don't have a account, redirect to sign up dialog
          */
-        $scope.openSignUpDialog = function () {
+        $scope.toSignUp = function () {
             SignFactory.closeDialog();
-            SignFactory.openSignUpDialog();
+            // SignFactory.openSignUpDialog();
+            $state.go('app.register');
         }
 
     }])
