@@ -286,21 +286,21 @@ angular.module('shino')
             // ResFactory.dishRes().update({id: parseInt($stateParams.dishId, 10)}, $scope.dish);
             ResFactory.commentRes().save({ id: $scope.dish._id }, $scope.comment)
                 .$promise.then(
-                    function() {
-                        $state.reload();
-                    },
-                    function() {
-                        console.log('send comment failed');
+                function () {
+                    $state.reload();
+                    
+                    $scope.commentForm.$setPristine();
+                    $scope.comment = {
+                        _id: '',
+                        rating: '5',
+                        comment: ''
                     }
+                },
+                function (res) {
+                    console.log('send comment failed', res);
+                }
                 );
 
-            $scope.commentForm.$setPristine();
-
-            $scope.comment = {
-                _id: '',
-                rating: '5',
-                comment: ''
-            }
         }
 
         /**
