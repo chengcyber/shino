@@ -6,12 +6,13 @@ var gulp = require('gulp'),
     imagemin = require('gulp-imagemin'),
     // rename = require('gulp-rename'),
     // concat = require('gulp-concat'),
-    notify = require('gulp-notify'),
+    // notify = require('gulp-notify'),
     cache = require('gulp-cache'),
     // changed = require('gulp-changed'),
     rev = require('gulp-rev'),
     browserSync = require('browser-sync'),
     ngAnnotate = require('gulp-ng-annotate'),
+    stripDebug = require('gulp-strip-debug'),
     del = require('del');
 
 
@@ -41,12 +42,27 @@ gulp.task('default', ['clean'], function () {
 gulp.task('usemin', ['eslint'], function () {
     gulp.src('./app/views/*.html')
         .pipe(gulp.dest('dist/views'));
+
+    /**
+     * when set NODE_ENV = production
+     * remove debugger & console
+     * uglify js files
+     */
+    var useminJsArr = [];
+    useminJsArr.push(ngAnnotate());
+    if (process.env.NODE_ENV === 'production') {
+        useminJsArr.push(stripDebug());
+        useminJsArr.push(uglify());
+    }
+    useminJsArr.push(rev());
+
     return gulp.src('./app/*.html')
         .pipe(usemin({
             css: [cleanCss(), rev()],
-            js: [ngAnnotate(),
-                // uglify(),
-                rev()]
+            // js: [ngAnnotate(),
+            //     // uglify(),
+            //     rev()]
+            js: useminJsArr
         }))
         .pipe(gulp.dest('dist/'));
 });
