@@ -48,6 +48,7 @@ gulp.task('usemin', ['eslint'], function () {
      * remove debugger & console
      * uglify js files
      */
+    console.log('NODE_ENV: ', process.env.NODE_ENV);
     var useminJsArr = [];
     useminJsArr.push(ngAnnotate());
     if (process.env.NODE_ENV === 'production') {
