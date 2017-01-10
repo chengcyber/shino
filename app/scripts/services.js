@@ -70,7 +70,7 @@ angular.module('shino')
                 $window.localStorage[key] = JSON.stringify(value);
             },
             getObject: function (key, defaultValue) {
-                return JSON.parse($window.localStorage[key]) || defaultValue;
+                return JSON.parse($window.localStorage[key] || defaultValue);
             }
         }
     }])
@@ -281,7 +281,7 @@ angular.module('shino')
          */
         authFac.loadCredential = function () {
             var self = this;
-            var credential = $localStorage.getObject(credentialKey, {});
+            var credential = $localStorage.getObject(credentialKey, '{}');
             console.log('credential', credential);
             // localStorage have credentials
             if (credential && credential.token) {
