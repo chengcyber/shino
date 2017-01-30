@@ -47,7 +47,19 @@ angular.module('shino')
             $scope.username = AuthFactory.getUsername();
         });
 
-        
+
+        /**
+         * collpased navbar toggle when click
+         */
+        $scope.initNavToggle = function() {
+            $(function () {
+                $('.nav a:not(.dropdown-toggle)').click(function () {
+                    $('.navbar-collapse.in').collapse('hide');
+                });
+            });
+        };
+
+        $scope.initNavToggle();
 
 
     }])
